@@ -1,4 +1,5 @@
-﻿using NotesApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using NotesApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,13 @@ namespace NotesApi.Data
 
         public bool Update(Note entity)
         {
-            throw new NotImplementedException();
+            var noteToUpdate = _dbContext.Update(entity);
+
+            noteToUpdate.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+            var rowsAffected = _dbContext.SaveChanges();
+
+            return rowsAffected > 0;
         }
     }
 }

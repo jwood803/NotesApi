@@ -35,15 +35,33 @@ namespace NotesApi.Controllers
         }
 
         [HttpPost]
-        public bool AddNote(Note note)
+        public IActionResult AddNote([FromBody]Note note)
         {
-            return true;
+            var noteWithId = _repository.GetById(note.Id);
+
+            if(noteWithId != null)
+            {
+                return new JsonResult("Note already exists");
+            }
+
+            _repository.Add(note);
+
+            return new StatusCodeResult(200);
         }
 
-        [HttpPut]
-        public bool EditNote(Note note)
+        [HttpPut("{noteId}")]
+        public IActionResult EditNote(int noteId, [FromBody]Note note)
         {
-            return true;
+            var noteToUpdate = _repository.GetById(noteId);
+
+            if (noteToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            _repository.Update(note);
+
+            return new StatusCodeResult(200);
         }
 
         [HttpDelete("{noteId}")]
@@ -58,7 +76,7 @@ namespace NotesApi.Controllers
 
             _repository.Delete(note);
 
-            return new NoContentResult();
+            return new StatusCodeResult(200);
         }
     }
 }
