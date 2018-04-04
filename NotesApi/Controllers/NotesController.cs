@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using NotesApi.Data;
 using NotesApi.Models;
 
 namespace NotesApi.Controllers
@@ -10,13 +11,19 @@ namespace NotesApi.Controllers
     [Route("api/[controller]")]
     public class NotesController : Controller
     {
+        public NotesRepository _repository { get; }
+
+        public NotesController()
+        {
+            _repository = new NotesRepository();
+        }
+
         [HttpGet]
         public IEnumerable<Note> GetNotes()
         {
-            return new List<Note>
-            {
-                new Note { Id=1, Details="Details", Title="New book" }
-            };
+            var items = _repository.GetAll();
+
+            return items;
         }
 
         [HttpPost]
