@@ -26,6 +26,14 @@ namespace NotesApi.Controllers
             return items;
         }
 
+        [HttpGet("{id}")]
+        public Note GetNoteById(int id)
+        {
+            var note = _repository.GetById(id);
+
+            return note;
+        }
+
         [HttpPost]
         public bool AddNote(Note note)
         {
@@ -38,10 +46,19 @@ namespace NotesApi.Controllers
             return true;
         }
 
-        [HttpDelete]
-        public bool DeleteNote(int noteId)
+        [HttpDelete("{noteId}")]
+        public IActionResult DeleteNote(int noteId)
         {
-            return true;
+            var note = _repository.GetById(noteId);
+
+            if(note == null)
+            {
+                return NotFound();
+            }
+
+            _repository.Delete(note);
+
+            return new NoContentResult();
         }
     }
 }

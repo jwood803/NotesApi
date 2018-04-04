@@ -22,8 +22,7 @@ namespace NotesApi.Data
 
             var mySqlKey = Configuration.GetSection("Keys").GetValue("MySQL", "");
 
-            optionsBuilder
-                .UseMySql($"Server=localhost;database=notes;uid=root;pwd={mySqlKey}");
+            optionsBuilder.UseMySql($"Server=localhost;database=notes;uid=root;pwd={mySqlKey}");
         }
     }
 }

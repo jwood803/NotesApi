@@ -9,8 +9,8 @@ namespace NotesApi.Data
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        bool Add(T entity);
+        bool Update(T entity);
+        bool Delete(T entity);
     }
 }

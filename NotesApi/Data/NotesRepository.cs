@@ -15,16 +15,24 @@ namespace NotesApi.Data
 
         public NotesContext _dbContext { get; }
 
-        public void Add(Note entity)
+        public bool Add(Note entity)
         {
             _dbContext.Add(entity);
         
-            _dbContext.SaveChanges();
+            var rowsAffected = _dbContext.SaveChanges();
+
+            return rowsAffected > 0;
         }
 
-        public void Delete(Note entity)
+        public bool Delete(Note note)
         {
-            throw new NotImplementedException();
+            var noteToDelete = _dbContext.Attach(note);
+
+            noteToDelete.State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+
+            var rowsAffected = _dbContext.SaveChanges();
+
+            return rowsAffected > 0;
         }
 
         public IEnumerable<Note> GetAll()
@@ -34,10 +42,12 @@ namespace NotesApi.Data
 
         public Note GetById(int id)
         {
-            throw new NotImplementedException();
+            var note = _dbContext.Note.Find(id);
+
+            return note;
         }
 
-        public void Update(Note entity)
+        public bool Update(Note entity)
         {
             throw new NotImplementedException();
         }
