@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotesApi.Models;
 using System;
 using System.Collections.Generic;
@@ -16,45 +17,45 @@ namespace NotesApi.Data
 
         public NotesContext _dbContext { get; }
 
-        public bool Add(Note entity)
+        public async Task<bool> AddAsync(Note entity)
         {
             _dbContext.Add(entity);
         
-            var rowsAffected = _dbContext.SaveChanges();
+            var rowsAffected = await _dbContext.SaveChangesAsync();
 
             return rowsAffected > 0;
         }
 
-        public bool Delete(Note note)
+        public async Task<bool> DeleteAsync(Note note)
         {
             var noteToDelete = _dbContext.Attach(note);
 
-            noteToDelete.State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            noteToDelete.State = EntityState.Deleted;
 
-            var rowsAffected = _dbContext.SaveChanges();
+            var rowsAffected = await _dbContext.SaveChangesAsync();
 
             return rowsAffected > 0;
         }
 
-        public IEnumerable<Note> GetAll()
+        public async Task<IEnumerable<Note>> GetAllAsync()
         {
-            return _dbContext.Note.ToList();
+            return await _dbContext.Note.ToListAsync();
         }
 
-        public Note GetById(int id)
+        public async Task<Note> GetByIdAsync(int id)
         {
-            var note = _dbContext.Note.Find(id);
+            var note = await _dbContext.Note.FindAsync(id);
 
             return note;
         }
 
-        public bool Update(Note entity)
+        public async Task<bool> UpdateAsync(Note entity)
         {
             var noteToUpdate = _dbContext.Update(entity);
 
-            noteToUpdate.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            noteToUpdate.State = EntityState.Modified;
 
-            var rowsAffected = _dbContext.SaveChanges();
+            var rowsAffected = await _dbContext.SaveChangesAsync();
 
             return rowsAffected > 0;
         }

@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  notesapi:
+    image: notesapi
+    ports:
+      - 3305
+    build:
+      context: .
+      dockerfile: NotesApi/Dockerfile
+    networks:
+      - dock_net
+
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306
+    environment:
+      MYSQL_DATABASE: notes
+      MYSQL_ROOT_PASSWORD: zD7a#j1I!V
+    networks:
+      - dock_net
+
+networks:
+  dock_net:
+    driver: bridge

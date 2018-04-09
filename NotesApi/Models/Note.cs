@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotesApi.Models
 {
+    [Table("note")]
     public class Note
     {
         public int Id { get; set; }

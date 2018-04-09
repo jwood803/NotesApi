@@ -7,10 +7,10 @@ namespace NotesApi.Data
 {
     interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        bool Add(T entity);
-        bool Update(T entity);
-        bool Delete(T entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int id);
+        Task<bool> AddAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(T entity);
     }
 }

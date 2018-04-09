@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NotesApi.Data;
 using NotesApi.Models;
@@ -19,62 +20,62 @@ namespace NotesApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Note> GetNotes()
+        public async Task<IEnumerable<Note>> GetNotes()
         {
-            var items = _repository.GetAll();
+            var items = await _repository.GetAllAsync();
 
             return items;
         }
 
         [HttpGet("{id}")]
-        public Note GetNoteById(int id)
+        public async Task<Note> GetNoteById(int id)
         {
-            var note = _repository.GetById(id);
+            var note = await _repository.GetByIdAsync(id);
 
             return note;
         }
 
         [HttpPost]
-        public IActionResult AddNote([FromBody]Note note)
+        public async Task<IActionResult> AddNote([FromBody]Note note)
         {
-            var noteWithId = _repository.GetById(note.Id);
+            var noteWithId = await _repository.GetByIdAsync(note.Id);
 
             if(noteWithId != null)
             {
                 return new JsonResult("Note already exists");
             }
 
-            _repository.Add(note);
+            await _repository.AddAsync(note);
 
             return new StatusCodeResult(200);
         }
 
         [HttpPut("{noteId}")]
-        public IActionResult EditNote(int noteId, [FromBody]Note note)
+        public async Task<IActionResult> EditNote(int noteId, [FromBody]Note note)
         {
-            var noteToUpdate = _repository.GetById(noteId);
+            var noteToUpdate = await _repository.GetByIdAsync(noteId);
 
             if (noteToUpdate == null)
             {
                 return NotFound();
             }
 
-            _repository.Update(note);
+            await _repository.UpdateAsync(note);
 
             return new StatusCodeResult(200);
         }
 
         [HttpDelete("{noteId}")]
-        public IActionResult DeleteNote(int noteId)
+        public async Task<IActionResult> DeleteNote(int noteId)
         {
-            var note = _repository.GetById(noteId);
+            var note = await _repository.GetByIdAsync(noteId);
 
             if(note == null)
             {
                 return NotFound();
             }
 
-            _repository.Delete(note);
+            await _repository.DeleteAsync(note);
 
             return new StatusCodeResult(200);
         }

@@ -20,9 +20,10 @@ namespace NotesApi.Data
 
             Configuration = builder.Build();
 
-            var mySqlKey = Configuration.GetSection("Keys").GetValue("MySQL", "");
+            var mySqlKey = Configuration.GetSection("MySQL").GetValue("Password", "");
+            var mySqlPort = Configuration.GetSection("MySQL").GetValue("Port", 0);
 
-            optionsBuilder.UseMySql($"Server=localhost;database=notes;uid=root;pwd={mySqlKey}");
+            optionsBuilder.UseMySql($"Server=10.0.75.1;port={mySqlPort};database=notes;uid=root;pwd={mySqlKey}");
         }
     }
 }
